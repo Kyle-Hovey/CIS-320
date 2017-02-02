@@ -10,7 +10,9 @@ function updateTable() {
             // it to see the fields. Specifically, it is an array of objects.
             // Here we loop the array and print the first name.
                 for (var i = 0; i < json_result.length; i++) {
-                    $('#datatable tbody').append("<tr><td>" + json_result[i].first + "</tr></td>");
+                    $('#datatable tbody').append("<tr><td>" + json_result[i].id + "</td>" + "<td>" + json_result[i].first + " " +
+                                                    json_result[i].last + "</td>" + "<td>" +  json_result[i].email + "</td>" +
+                                                    "<td>" + json_result[i].phone + "</td>" + "<td>" + json_result[i].birthday + "</td></tr>");
                 }
 
                 if (json_result.length != 0) {
