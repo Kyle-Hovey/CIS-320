@@ -84,6 +84,7 @@ function validation() {
     var emailReg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     var phoneReg = /^[0-9]{3}-[0-9]{3}-[0-9]{4}$/;
     var birthdayReg = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/;
+    var valid_form = true;
 
     if (nameReg.test(firstName))
     {
@@ -110,6 +111,7 @@ function validation() {
 
         // Put in the field used by screen readers
         $('#firstNameStatus').val("(error)");
+        valid_form = false;
     }
 
     if (nameReg.test(lastName))
@@ -138,6 +140,7 @@ function validation() {
 
         // Put in the field used by screen readers
         $('#lastNameStatus').val("(error)");
+        valid_form = false;
     }
 
     if (emailReg.test(email))
@@ -166,6 +169,7 @@ function validation() {
 
         // Put in the field used by screen readers
         $('#emailStatus').val("(error)");
+        valid_form = false;
     }
 
     if (phoneReg.test(phone))
@@ -194,6 +198,7 @@ function validation() {
 
         // Put in the field used by screen readers
         $('#phoneStatus').val("(error)");
+        valid_form = false
     }
 
     if (birthdayReg.test(birthday))
@@ -222,12 +227,29 @@ function validation() {
 
         // Put in the field used by screen readers
         $('#birthdayStatus').val("(error)");
+        valid_form = false
     }
+
+    if (valid_form) {
+        console.log("Form is valid.");
+
+        var url = "api/name_list_edit";
+        var dataToServer = { first : firstName , last: lastName ,
+                            email : email , phone: phone , birthday : birthday};
+        $.post(url, dataToServer, function (dataFromServer) {
+            console.log("Finished calling servlet.");
+            console.log(dataFromServer);
+        });
+    }
+    else console.log("Form is invalid");
 }
 
 function saveChanges() {
     console.log("Let's pretend that I saved those changes for now.");
     validation();
+    $('#myModal').modal('hide');
+    $('#datatable tbody tr').remove();
+    updateTable();
 }
 
 var saveChangesButton = $('#saveChanges');

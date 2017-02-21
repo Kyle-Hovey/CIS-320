@@ -33,5 +33,6 @@ public class NameListGet extends javax.servlet.http.HttpServlet {
         Gson gson = new Gson();
         String json = gson.toJson(peopleList);
         out.print(json);
+        log.log(Level.SEVERE, "Plz Show Up");
     }
 }
