@@ -87,6 +87,7 @@ function deleteItem(e) {
         console.log("Finished calling servlet.");
         console.log(dataFromServer);
     });
+    $('#datatable tbody tr').remove();
     updateTable();
 }
 
