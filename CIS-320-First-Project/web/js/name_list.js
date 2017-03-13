@@ -14,8 +14,12 @@ function updateTable() {
                     phoneString = phoneString.substring(0,3) + "-" + phoneString.substring(3,6) + "-" + phoneString.substring(6,10);
                     $('#datatable tbody').append("<tr><td>" + json_result[i].id + "</td>" + "<td>" + json_result[i].first + " " +
                                                     json_result[i].last + "</td>" + "<td>" +  json_result[i].email + "</td>" +
-                                                    "<td>" + phoneString + "</td>" + "<td>" + json_result[i].birthday + "</td></tr>");
+                                                    "<td>" + phoneString + "</td>" + "<td>" + json_result[i].birthday + "</td>" +
+                                                    "<td><button type='button' name='delete' class='editButton btn deleteButton' value='" + json_result[i].id + "'>Delete</button></td></tr>");
                 }
+
+
+                $(".deleteButton").on("click", deleteItem);
 
                 if (json_result.length != 0) {
                     $('#noData').remove();
@@ -72,6 +76,19 @@ function showDialogAdd() {
 
 var addItemButton = $('#addItem');
 addItemButton.on("click", showDialogAdd);
+
+function deleteItem(e) {
+    console.debug("Delete");
+    console.debug((e.target.value));
+    var id = (e.target.value);
+    var url = "api/name_list_delete";
+    var dataToServer = { id : id};
+    $.post(url, dataToServer, function (dataFromServer) {
+        console.log("Finished calling servlet.");
+        console.log(dataFromServer);
+    });
+    updateTable();
+}
 
 function validation() {
 

@@ -24,22 +24,12 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>FormTestServlet</servlet-name>
-        <servlet-class>edu.simpson.cis320firstproject.FormTestServlet</servlet-class>
+        <servlet-name>NameListDelete</servlet-name>
+        <servlet-class>edu.simpson.cis320firstproject.NameListDelete</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>FormTestServlet</servlet-name>
-        <url-pattern>/api/form_test_servlet</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>FormTestJSONServlet</servlet-name>
-        <servlet-class>edu.simpson.cis320firstproject.FormTestJSONServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>FormTestJSONServlet</servlet-name>
-        <url-pattern>/api/form_test_json_servlet</url-pattern>
+        <servlet-name>NameListDelete</servlet-name>
+        <url-pattern>/api/name_list_delete</url-pattern>
     </servlet-mapping>
 </web-app>
