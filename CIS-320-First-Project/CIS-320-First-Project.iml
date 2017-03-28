@@ -4,6 +4,7 @@
     <facet type="web" name="Web">
       <configuration>
         <descriptors>
+          <deploymentDescriptor name="context.xml" url="file://$MODULE_DIR$/web/META-INF/context.xml" />
           <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/web/WEB-INF/web.xml" />
         </descriptors>
         <webroots>
@@ -19,10 +20,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="library" name="servlet-api" level="project" />
+    <orderEntry type="library" name="tomcat-jdbc" level="project" />
     <orderEntry type="library" name="gson-2.8.0" level="project" />
-    <orderEntry type="library" name="jdbc-console" level="project" />
     <orderEntry type="library" name="mysql-connector-java-5.1.40-bin" level="project" />
-    <orderEntry type="library" name="tomcat-dbcp" level="project" />
   </component>
 </module>
