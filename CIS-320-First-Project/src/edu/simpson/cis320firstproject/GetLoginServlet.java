@@ -25,11 +25,16 @@ public class GetLoginServlet extends HttpServlet{
         HttpSession session = request.getSession();
 
         // - This example lists every session variable
-        out.println("Session Attributes:");
+
         Enumeration<String> attributes = session.getAttributeNames();
-        while(attributes.hasMoreElements()) {
+        if (attributes.hasMoreElements()) {
             String attribute = attributes.nextElement();
-            out.println(String.format("  %s = '%s'", attribute, session.getAttribute(attribute).toString()));
+            out.print("You are logged in as: '");
+            out.print(String.format(session.getAttribute(attribute).toString()) + "'");
+        }
+
+        else {
+            out.print("You are not logged in.");
         }
 
     }

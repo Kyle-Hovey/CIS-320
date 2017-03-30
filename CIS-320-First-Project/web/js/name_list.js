@@ -88,7 +88,7 @@ function deleteItem(e) {
         console.log(dataFromServer);
     });
     $('#datatable tbody tr').remove();
-    updateTable();
+    setTimeout(updateTable, 1000);
 }
 
 function validation() {
@@ -267,7 +267,7 @@ function saveChanges() {
     validation();
     $('#myModal').modal('hide');
     $('#datatable tbody tr').remove();
-    updateTable();
+    setTimeout(updateTable, 1000);
 }
 
 var saveChangesButton = $('#saveChanges');
