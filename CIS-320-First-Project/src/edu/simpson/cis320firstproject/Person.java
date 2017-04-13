@@ -6,15 +6,15 @@ import java.util.*;
  * Created by Kyle on 1/26/2017.
  */
 public class Person {
-    private int id;
+    private String id;
     private String first;
     private String last;
     private String phone;
     private String email;
-    private Date birthday;
+    private String birthday;
 
-    public int getId() {return id; }
-    public void setId(int id) { this.id = id; }
+    public String getId() {return id; }
+    public void setId(String id) { this.id = id; }
 
     public String getFirst() {return first; }
     public void setFirst(String first) {this.first = first; }
@@ -28,7 +28,7 @@ public class Person {
     public String getPhone() {return phone; }
     public void setPhone(String phone) {this.phone = phone; }
 
-    public Date getBirthday() {return birthday; }
-    public void setBirthday(Date birthday) {this.birthday = birthday; }
+    public String getBirthday() {return birthday;}
+    public void setBirthday(String birthday) {this.birthday = birthday;}
 
 }
