@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -40,6 +41,7 @@ public class NameListEdit extends HttpServlet {
         out.println("Post");
 
         // Grab the data we got via a parameter
+        String id = request.getParameter("id");
         String firstName = request.getParameter("first");
         String lastName = request.getParameter("last");
         String phone = request.getParameter("phone");
@@ -47,7 +49,7 @@ public class NameListEdit extends HttpServlet {
         String birthday = request.getParameter("birthday");
 
         // Just print the data out to confirm we got it.
-        out.println("firstName='"+firstName+"',"+"lastName='"+lastName+"',"+
+        out.println("id='"+id+"',firstName='"+firstName+"',"+"lastName='"+lastName+"',"+
                 "phone='"+phone+"',"+"email='"+email+"',"+
                 "birthday='"+birthday+"'");
 
@@ -91,10 +93,15 @@ public class NameListEdit extends HttpServlet {
             out.println("Birthday is not valid");
             validFields = false;
         }
-        if (validFields) {
+        if (validFields && id.equals("")) {
             phone = phone.substring(0,3) + phone.substring(4,7) + phone.substring(8,12);
             birthday = birthday.substring(6,10)+ "-" + birthday.substring(0,2) + "-" + birthday.substring(3,5);
             PersonDAO.setPeople(firstName,lastName,email,phone,birthday);
+        }
+        else if (validFields) {
+            phone = phone.substring(0,3) + phone.substring(4,7) + phone.substring(8,12);
+            birthday = birthday.substring(6,10)+ "-" + birthday.substring(0,2) + "-" + birthday.substring(3,5);
+            PersonDAO.updatePeople(id,firstName,lastName,email,phone,birthday);
         }
         else out.println("Check that all fields are valid");
     }

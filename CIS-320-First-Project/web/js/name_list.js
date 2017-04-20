@@ -9,18 +9,21 @@ function updateTable() {
             // json_result is an object. You can set a breakpoint, or print
             // it to see the fields. Specifically, it is an array of objects.
             // Here we loop the array and print the first name.
+
                 for (var i = 0; i < json_result.length; i++) {
+                    console.debug(json_result[i]);
                     phoneString = json_result[i].phone;
                     phoneString = phoneString.substring(0,3) + "-" + phoneString.substring(3,6) + "-" + phoneString.substring(6,10);
                     $('#datatable tbody').append("<tr><td>" + json_result[i].id + "</td>" + "<td>" + json_result[i].first + " " +
                                                     json_result[i].last + "</td>" + "<td>" +  json_result[i].email + "</td>" +
                                                     "<td>" + phoneString + "</td>" + "<td>" + json_result[i].birthday + "</td>" +
-                                                    "<td><button type='button' name='delete' class='editButton btn deleteButton' value='" + json_result[i].id + "'>Delete</button></td></tr>");
+                                                    "<td><button type='button' name='edit' class='editButton btn' value='" + json_result[i].id + "'>Edit</button></td>" +
+                                                    "<td><button type='button' name='delete' class='btn deleteButton' value='" + json_result[i].id + "'>Delete</button></td></tr>");
                 }
 
 
                 $(".deleteButton").on("click", deleteItem);
-
+                $(".editButton").on("click", editItem);
                 if (json_result.length != 0) {
                     $('#noData').remove();
                     console.log("Done.");
@@ -93,6 +96,7 @@ function deleteItem(e) {
 
 function validation() {
 
+    var id = $('#id').val();
     var firstName = $('#firstName').val();
     var lastName = $('#lastName').val();
     var email = $('#email').val();
@@ -252,7 +256,7 @@ function validation() {
         console.log("Form is valid.");
 
         var url = "api/name_list_edit";
-        var dataToServer = { first : firstName , last: lastName ,
+        var dataToServer = { id : id , first : firstName , last: lastName ,
                             email : email , phone: phone , birthday : birthday};
         $.post(url, dataToServer, function (dataFromServer) {
             console.log("Finished calling servlet.");
@@ -261,7 +265,29 @@ function validation() {
     }
     else console.log("Form is invalid");
 }
+function editItem(e){
+    console.debug("Edit");
+    console.debug(e.target.value);
 
+    var id = e.target.value;
+    var firstname = e.target.parentNode.parentNode.querySelectorAll("td")[1].innerHTML.split(" ")[0];
+    var lastname = e.target.parentNode.parentNode.querySelectorAll("td")[1].innerHTML.split(" ")[1];
+    var email = e.target.parentNode.parentNode.querySelectorAll("td")[2].innerHTML;
+    var phone = e.target.parentNode.parentNode.querySelectorAll("td")[3].innerHTML;
+    var birthday = e.target.parentNode.parentNode.querySelectorAll("td")[4].innerHTML.substring(5,7) + "/" +
+        e.target.parentNode.parentNode.querySelectorAll("td")[4].innerHTML.substring(8,10) + "/" +
+        e.target.parentNode.parentNode.querySelectorAll("td")[4].innerHTML.substring(0,4);
+
+
+    $('#id').val(id);
+    $('#firstName').val(firstname);
+    $('#lastName').val(lastname);
+    $('#email').val(email);
+    $('#phoneField').val(phone);
+    $('#birthday').val(birthday);
+
+    $('#myModal').modal('show');
+}
 function saveChanges() {
     console.log("Let's pretend that I saved those changes for now.");
     validation();
