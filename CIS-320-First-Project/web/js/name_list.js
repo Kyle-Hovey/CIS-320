@@ -15,12 +15,12 @@ function updateTable() {
                     $('#datatable tbody').append("<tr><td>" + json_result[i].id + "</td>" + "<td>" + json_result[i].first + " " +
                                                     json_result[i].last + "</td>" + "<td>" +  json_result[i].email + "</td>" +
                                                     "<td>" + phoneString + "</td>" + "<td>" + json_result[i].birthday + "</td>" +
-                                                    "<td><button type='button' name='edit' class='editButton btn' value='" + json_result[i].id + "'>Edit</button></td>" +
-                                                    "<td><button type='button' name='delete' class='btn deleteButton' value='" + json_result[i].id + "'>Delete</button></td></tr>");
+                                                    "<td><button type='button' name='delete' class='editButton btn deleteButton' value='" + json_result[i].id + "'>Delete</button></td></tr>");
                 }
 
+
                 $(".deleteButton").on("click", deleteItem);
-                $(".editButton").on("click", editItem);
+
                 if (json_result.length != 0) {
                     $('#noData').remove();
                     console.log("Done.");
@@ -74,11 +74,25 @@ function showDialogAdd() {
     $('#myModal').modal('show');
 }
 
-$('#addItem').on("click", showDialogAdd);
+var addItemButton = $('#addItem');
+addItemButton.on("click", showDialogAdd);
+
+function deleteItem(e) {
+    console.debug("Delete");
+    console.debug((e.target.value));
+    var id = (e.target.value);
+    var url = "api/name_list_delete";
+    var dataToServer = { id : id};
+    $.post(url, dataToServer, function (dataFromServer) {
+        console.log("Finished calling servlet.");
+        console.log(dataFromServer);
+    });
+    $('#datatable tbody tr').remove();
+    setTimeout(updateTable, 1000);
+}
 
 function validation() {
 
-    var id = $("#id").val();
     var firstName = $('#firstName').val();
     var lastName = $('#lastName').val();
     var email = $('#email').val();
@@ -238,85 +252,23 @@ function validation() {
         console.log("Form is valid.");
 
         var url = "api/name_list_edit";
-        var dataToServer = { id : id, first : firstName , last: lastName ,
+        var dataToServer = { first : firstName , last: lastName ,
                             email : email , phone: phone , birthday : birthday};
         $.post(url, dataToServer, function (dataFromServer) {
             console.log("Finished calling servlet.");
             console.log(dataFromServer);
         });
-        $('#myModal').modal('hide');
-        setTimeout(function(){
-            $('#datatable tbody tr').remove();
-            updateTable();
-        },2000);
     }
     else console.log("Form is invalid");
 }
 
-
-function deleteItem(e) {
-    console.debug("Delete");
-    console.debug((e.target.value));
-    var id = (e.target.value);
-    var url = "api/name_list_delete";
-    var dataToServer = { id : id};
-    $.post(url, dataToServer, function (dataFromServer) {
-        console.log("Finished calling servlet.");
-        console.log(dataFromServer);
-    });
-    setTimeout(function(){
-        $('#datatable tbody tr').remove();
-        updateTable();
-    },2000);
-}
-
-function editItem(e) {
-        console.debug("Edit");
-        console.debug(e.target.value);
-        console.log("Opening add item dialog");
-        console.log(id);
-        var birthday =  e.target.parentNode.parentNode.querySelectorAll("td")[4].innerHTML.substring(5,7) + "/" +
-                        e.target.parentNode.parentNode.querySelectorAll("td")[4].innerHTML.substring(8,10) + "/" +
-                        e.target.parentNode.parentNode.querySelectorAll("td")[4].innerHTML.substring(0,4);
-        $('#id').val(e.target.value)
-        $('#firstName').val((e.target.parentNode.parentNode.querySelectorAll("td")[1].innerHTML).split(" ")[0]);
-        $('#lastName').val((e.target.parentNode.parentNode.querySelectorAll("td")[1].innerHTML).split(" ")[1]);
-        $('#email').val(e.target.parentNode.parentNode.querySelectorAll("td")[2].innerHTML);
-        $('#phoneField').val(e.target.parentNode.parentNode.querySelectorAll("td")[3].innerHTML);
-        $('#birthday').val(birthday);
-
-        $('#firstNameDiv').removeClass("has-error");
-        $('#firstNameGlyph').removeClass("glyphicon-remove");
-        $('#firstNameDiv').removeClass("has-success");
-        $('#firstNameGlyph').removeClass("glyphicon-ok");
-
-        $('#lastNameDiv').removeClass("has-error");
-        $('#lastNameGlyph').removeClass("glyphicon-remove");
-        $('#lastNameDiv').removeClass("has-success");
-        $('#lastNameGlyph').removeClass("glyphicon-ok");
-
-        $('#emailDiv').removeClass("has-error");
-        $('#emailGlyph').removeClass("glyphicon-remove");
-        $('#emailDiv').removeClass("has-success");
-        $('#emailGlyph').removeClass("glyphicon-ok");
-
-        $('#phoneDiv').removeClass("has-error");
-        $('#phoneGlyph').removeClass("glyphicon-remove");
-        $('#phoneDiv').removeClass("has-success");
-        $('#phoneGlyph').removeClass("glyphicon-ok");
-
-        $('#birthdayDiv').removeClass("has-error");
-        $('#birthdayGlyph').removeClass("glyphicon-remove");
-        $('#birthdayDiv').removeClass("has-success");
-        $('#birthdayGlyph').removeClass("glyphicon-ok");
-
-        $('#myModal').modal('show');
-
-        }
-
 function saveChanges() {
     console.log("Let's pretend that I saved those changes for now.");
     validation();
+    $('#myModal').modal('hide');
+    $('#datatable tbody tr').remove();
+    setTimeout(updateTable, 1000);
 }
 
-$('#saveChanges').on("click", saveChanges);
+var saveChangesButton = $('#saveChanges');
+saveChangesButton.on("click", saveChanges);

@@ -70,12 +70,12 @@ public class PersonDAO {
                 Person person = new Person();
 
                 // Get the data from the result set, and copy it to the Person object
-                person.setId(rs.getString("id"));
+                person.setId(rs.getInt("id"));
                 person.setFirst(rs.getString("first"));
                 person.setLast(rs.getString("last"));
                 person.setPhone(rs.getString("phone"));
                 person.setEmail(rs.getString("email"));
-                person.setBirthday(rs.getString("birthday"));
+                person.setBirthday(rs.getDate("birthday"));
 
 
                 // Add this person to the list so we can return it.
@@ -127,7 +127,7 @@ public class PersonDAO {
             // String sql = "select id, first, last, phone from person where id = ?";
 
             // Create an object with all the info about our SQL statement to run.
-            // stmt = conn.prepareStatement(sql);
+            stmt = conn.prepareStatement(sql);
 
             // If you had parameters, they would be set wit something like:
             // stmt.setString(1, "1");
@@ -186,56 +186,6 @@ public class PersonDAO {
             log.log(Level.SEVERE, "Error", e);
         } finally {
             // Ok, close our statement, and connection
-            try {
-                stmt.close();
-            } catch (Exception e) {
-                log.log(Level.SEVERE, "Error", e);
-            }
-            try {
-                conn.close();
-            } catch (Exception e) {
-                log.log(Level.SEVERE, "Error", e);
-            }
-        }
-    }
-
-    public static void updatePeople(Person person) {
-        final Logger log = Logger.getLogger(PersonDAO.class.getName());
-
-        log.log(Level.FINE, "edit persons");
-
-
-        // Declare our variables
-        Connection conn = null;
-        PreparedStatement stmt = null;
-
-
-        // Databases are unreliable. Use some exception handling
-        try {
-            // Get our database connection
-            conn = DBHelper.getConnection();
-
-            //Person person = new Person();
-            // If you had parameters, it would look something like
-            String sql = "update person set first=? , last=? , phone=?, email=?, birthday=? where id=?";
-            stmt = conn.prepareStatement(sql);
-            stmt.setString(1, person.getFirst());
-            stmt.setString(2, person.getLast());
-            stmt.setString(3, person.getPhone());
-            stmt.setString(4, person.getEmail());
-            stmt.setString(5, person.getBirthday());
-            stmt.setString(6, String.valueOf(person.getId()));
-
-
-            stmt.executeUpdate();
-
-        } catch (SQLException se) {
-            log.log(Level.SEVERE, "SQL Error", se);
-        } catch (Exception e) {
-            log.log(Level.SEVERE, "Error", e);
-        } finally {
-            // Ok, close our result set, statement, and connection
-
             try {
                 stmt.close();
             } catch (Exception e) {
